@@ -13,7 +13,7 @@
                 <table class="table table-striped table-hover table-bordered dataTable no-footer" ng-cloak>
                     <thead>
                         <tr role="row">
-                            <th class="bs-checkbox" v-if="config.checkbox">
+                            <th class="bs-checkbox" v-if="checklist">
                                 <div class="th-inner">
                                     <input type="checkbox" v-select-all="checklist" :array="rows" />
                                 </div>
@@ -29,7 +29,7 @@
                     </thead>
                     <tbody v-show="!loading" v-cloak>
                         <tr v-for="item in rows" track-by="$index" :class="rowClass(item, $index)" @click="row_click(item, $index)">
-                            <td class="bs-checkbox" v-if="config.checkbox">
+                            <td class="bs-checkbox" v-if="checklist">
                                 <input type="checkbox" v-model="checklist" :value="item" class="checkbox" />
                             </td>
                             <td v-for="col in columns" v-show="col.visible" bt-row="item" column="col" callback="tdCallback(args, item, $parent.$index)">
@@ -59,7 +59,7 @@
 
 import Vue from 'vue'
 import btPager from './vue-pager.vue'
-import { directive as selectAll } from './selectAll.js'
+import { directive as selectAll } from './../directives/selectAll.js'
 
 export default {
     components: {
@@ -75,51 +75,37 @@ export default {
     },
     filters: {
         'btRow': function (col, row) {
-
             if(col.formatter){
                 return col.formatter;
             }
             else{
                 return '<div>{{item.' + col.field + '}}</div>';
             }
-
-
         },
     },
-    props: ['columns', 'rows', 'pager', 'config'],
+    props: ['columns', 'rows', 'pager', 'config', 'checklist'],
     created () {
         this.config = this.config || {}
     },
     beforeCompile () {
-
-        
-
         this.columns.forEach(col => {
-
             if(col.formatter){
-
                 Vue.partial(col.field, col.formatter)
             }
             else{
-
                 Vue.partial(col.field, '<div>{{item.' + col.field + '}}</div>')
             }
-
-            
         })
     },
     ready() {
         
-
-
-
     },
     methods: {
         rowClass() {
             return '';
         },
         row_click(item, index) {
-            if (this.config.checkbox) {
+            if (this.checklist) {
                 if (!this.checklist.some(t => t === item)) {
                     this.checklist.push(item)
                 }
@@ -129,29 +115,16 @@ export default {
             }
             this.$emit('row-click', item, index)
         },
-        checkAllChange() {
-            var selectall = this.toggleAll
-
-            this.checklist = []
-
-            if (!selectall) {
-                this.rows.forEach(t => this.checklist.push(t))
-            }
-        },
         callback() {
-
             this.$emit('cell-callback')
-
         },
     },
     compouted: {
-        toggleAll() {
-            return this.checklist.length == this.rows.length
-        }
+
     },
     data() {
         return {
-            checklist: [],
+            
         }
     }
 }

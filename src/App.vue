@@ -1,14 +1,10 @@
 <template>
   <div id="app">
-    <v-table :columns="columns" :rows="items" :pager="pager" :config="config" @row-click="rowClick" @cell-callback="cellCallback"
-      @page-change="pageChange">
-
-
-      <p slot="one">One</p>
-      <p slot="two">Two</p>
-
-
-
+    <v-table :columns="columns" :rows="items" :pager="pager" :config="config" 
+        :checklist.sync="checklist"
+        @row-click="rowClick" 
+        @cell-callback="cellCallback"
+        @page-change="pageChange">
     </v-table>
   </div>
 </template>
@@ -27,7 +23,7 @@ export default {
       // with hot-reload because the reloaded component
       // preserves its current state and we are modifying
       // its initial state.
-      config: { checkbox: true },
+      checklist: [],
       columns: [
                 {
                     title: 'id',
