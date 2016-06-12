@@ -35,7 +35,7 @@ export default {
                     title: 'name',
                     field: 'name',
                     visible: true,
-                    //sortable: true,
+                    sortable: true,
                 },
                 {
                     title: 'edit',

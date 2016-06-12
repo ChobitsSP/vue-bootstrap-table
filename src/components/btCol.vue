@@ -1,28 +1,45 @@
 <template>
-    <div class="th-inner {{sort_class}}" @click="change_sort()" :class="{ 'sortable both' : column.sortable }">
-        {{column.title}}
-    </div>
-    <div class="fht-cell">
-    </div>
+	<div class="th-inner" 
+	  :class="[{sortable: sortable}, sort_class]"
+	  @click="change_sort()"
+	  @keypress.enter="change_sort()">
+	    {{column.title}}
+  </div>
+  <div class="fht-cell">
+  </div>
 </template>
 
 <script>
 export default {
-  props: ['column', 'pager'],
-  data () {
-    return {
-      sort_class: ''
+    props: ['column', 'pager'],
+    methods: {
+        change_sort() {
+            if (!this.sortable) {
+                return
+            }
+            if (this.pager.sort_name === this.column.field) {
+                this.pager.is_desc = !this.pager.is_desc
+            }
+            else {
+                this.pager.is_desc = false
+                this.pager.sort_name = this.column.field
+            }
+        }
+    },
+    compouted: {
+        sortable() {
+            return this.column.sortable && this.pager
+        },
+        sort_class() {
+            // if (!this.sortable) {
+            //     return ''
+            // }
+            if (this.pager.sort_name === column.field) {
+                return this.pager.is_desc ? 'desc' : 'asc'
+            } else {
+                return 'both'
+            }
+        }
     }
-  }
-  methods: {
-    change_sort() {
-      
-      
-    }
-
-
-
-
-  }
 }
 </script>

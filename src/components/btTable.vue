@@ -19,11 +19,7 @@
                                 </div>
                             </th>
                             <th style="text-align: center;" v-for="col in columns" v-show="col.visible" bt-col="col" pager="pager">
-                                <div class="th-inner" :class="{ 'sortable both' : col.sortable }">
-                                    {{col.title}}
-                                </div>
-                                <div class="fht-cell">
-                                </div>
+                                <bt-col :column='col' :pager.sync='pager'></bt-col>
                             </th>
                         </tr>
                     </thead>
@@ -59,12 +55,14 @@
 
 //import Vue from 'vue'
 import btCell from './btCell.vue'
+import btCol from './btCol.vue'
 import btPager from './btPager.vue'
 import { directive as selectAll } from './../directives/selectAll.js'
 
 export default {
     components: {
         btPager,
+        btCol,
         btCell,
     },
     directives: {
