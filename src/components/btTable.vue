@@ -57,11 +57,10 @@
 
 <script>
 
-import Vue from 'vue'
+//import Vue from 'vue'
 import btCell from './btCell.vue'
-import btPager from './vue-pager.vue'
+import btPager from './btPager.vue'
 import { directive as selectAll } from './../directives/selectAll.js'
-import { directive as btRow } from './../directives/btRow.js'
 
 export default {
     components: {
@@ -70,22 +69,6 @@ export default {
     },
     directives: {
         selectAll,
-        btRow,
-           'gridcell':function(html){
-                var cell=$.parseHTML(html)[0];
-                this.vm.$compile(cell)
-                this.el.appendChild(cell);
-            }
-    },
-    filters: {
-        'btRow': function (col, row) {
-            if(col.formatter){
-                return col.formatter;
-            }
-            else{
-                return '<div>{{row.' + col.field + '}}</div>';
-            }
-        },
     },
     props: ['columns', 'rows', 'pager', 'config', 'checklist'],
     created () {
