@@ -29,7 +29,7 @@
                                 <input type="checkbox" v-model="checklist" :value="row" class="checkbox" />
                             </td>
                             <td style="text-align: center;" v-for="col in columns" v-show="col.visible" bt-row="row" column="col" callback="tdCallback(args, row, $parent.$index)">
-                                <bt-cell :row='row' :col='col' @callback='cell_callback'></bt-cell>
+                                <bt-cell :row='row' :column='col' @callback='cell_callback'></bt-cell>
                             </td>
                         </tr>
                         <tr class="no-records-found" v-if="rows.length === 0">
@@ -53,7 +53,6 @@
 
 <script>
 
-//import Vue from 'vue'
 import btCell from './btCell.vue'
 import btCol from './btCol.vue'
 import btPager from './btPager.vue'
