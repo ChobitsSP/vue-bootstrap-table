@@ -15,7 +15,7 @@
                         <tr role="row">
                             <th class="bs-checkbox" style="text-align: center; vertical-align: middle; width: 36px;" v-if="checklist">
                                 <div class="th-inner">
-                                    <input type="checkbox" v-select-all="checklist" :array="rows" />
+                                    <input type="checkbox" v-select-all="checklist" :array="items" />
                                 </div>
                             </th>
                             <th style="text-align: center;" v-for="col in columns" v-show="col.visible" bt-col="col" pager="pager">
@@ -24,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody v-show="!loading" v-cloak>
-                        <tr v-for="row in rows" track-by="$index" :class="rowClass(row, $index)" @click="row_click(row, $index)">
+                        <tr v-for="row in items" track-by="$index" :class="rowClass(row, $index)" @click="row_click(row, $index)">
                             <td style="text-align: center;" class="bs-checkbox" v-if="checklist">
                                 <input type="checkbox" v-model="checklist" :value="row" class="checkbox" />
                             </td>
@@ -32,7 +32,7 @@
                                 <bt-cell :row='row' :column='col' @callback='cell_callback'></bt-cell>
                             </td>
                         </tr>
-                        <tr class="no-records-found" v-if="rows.length === 0">
+                        <tr class="no-records-found" v-if="items.length === 0">
                             <td colspan="999" class="text-center">没有找到匹配的记录</td>
                         </tr>
                     </tbody>
@@ -67,7 +67,7 @@ export default {
     directives: {
         selectAll,
     },
-    props: ['columns', 'rows', 'pager', 'config', 'checklist'],
+    props: ['columns', 'rows', 'pager', 'config', 'checklist', 'searchQuery'],
     created () {
         this.config = this.config || {}
     },
@@ -103,8 +103,27 @@ export default {
             this.$emit('cell-callback', row)
         },
     },
-    compouted: {
-
+    computed: {
+        is_client_pager() {
+            var total = this.rows.length
+            return this.pager && (this.pager.total_result === total) && this.pager.page_size < total
+        },
+        items() {
+            if(this.is_client_pager) {
+                var sql = 'rows'
+                if(this.searchQuery) {
+                    sql += ' | filterBy searchQuery'
+                }
+                sql += ' | orderBy pager.sort_name ' + (this.pager.is_desc ? -1 : 1)
+                var offset = (this.pager.page_no - 1) * this.pager.page_size
+                offset = Math.max(0, offset)
+                sql += ' | limitBy pager.page_size ' + offset
+                return this.$eval(sql)
+            }
+            else {
+                return this.rows
+            }
+        }
     },
     data() {
         return {

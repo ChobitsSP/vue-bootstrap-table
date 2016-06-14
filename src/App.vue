@@ -10,21 +10,20 @@
 </template>
 
 <script>
-
 import vTable from './components/btTable.vue'
 
 export default {
-  components: {
-    vTable
-  },
-  data () {
-    return {
-      // note: changing this line won't causes changes
-      // with hot-reload because the reloaded component
-      // preserves its current state and we are modifying
-      // its initial state.
-      checklist: [],
-      columns: [
+    components: {
+        vTable
+    },
+    data() {
+        return {
+            // note: changing this line won't causes changes
+            // with hot-reload because the reloaded component
+            // preserves its current state and we are modifying
+            // its initial state.
+            checklist: [],
+            columns: [
                 {
                     title: 'id',
                     field: 'id',
@@ -43,33 +42,34 @@ export default {
                     visible: true,
                     formatter: '<a class="btn btn-xs btn-success" @click=callback("edit")>edit</a>',
                 },
-      ],
-      items: [
-                { id: 1, name: 'name1' },
-                { id: 2, name: 'name2' },
-                { id: 3, name: 'name3' },
             ],
-            pager:{
+            items: [],
+            pager: {
                 page_no: 1,
                 page_size: 10,
                 sort_name: 'id',
                 is_desc: true,
-                total_result: 100,             
+                total_result: 100,
             },
-    }
-  },
-  methods: {
-    rowClick (item, index) {
-      console.log('row clicked', item, index)
+        }
     },
-    cellCallback () {
-      console.log('cellCallback')
+    ready() {
+        for (var i = 0; i < 100; i++) {
+            this.items.push({ id: i, name: 'name' + i })
+        }
     },
-    pageChange () {
-      console.log('pageChange')
-      this.$log('pager')
+    methods: {
+        rowClick(item, index) {
+            console.log('row clicked', item, index)
+        },
+        cellCallback() {
+            console.log('cellCallback')
+        },
+        pageChange() {
+            console.log('pageChange')
+            this.$log('pager')
+        }
     }
-  }
 }
 </script>
 
