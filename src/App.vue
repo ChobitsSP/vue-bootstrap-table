@@ -40,7 +40,7 @@ export default {
                     title: 'edit',
                     field: 'edit',
                     visible: true,
-                    formatter: '<div><a class="btn btn-xs btn-success" @click=callback("edit")>edit</a><a class="btn btn-xs btn-danger" @click=callback("remove")>remove</a></div>',
+                    formatter: '<div><a class="btn btn-xs btn-success" @click.stop=callback("edit")>edit</a><a class="btn btn-xs btn-danger" @click.stop=callback("remove")>remove</a></div>',
                 },
             ],
             items: [],
@@ -60,7 +60,7 @@ export default {
     },
     methods: {
         rowClick(item, index) {
-            console.log('row clicked1', item, index)
+            console.log('row clicked', item, index)
         },
         cellCallback(row, args) {
             console.log('cellCallback', row, args)
