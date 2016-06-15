@@ -28,8 +28,8 @@
                             <td style="text-align: center;" class="bs-checkbox" v-if="checklist">
                                 <input type="checkbox" v-model="checklist" :value="row" class="checkbox" />
                             </td>
-                            <td style="text-align: center;" v-for="col in columns" v-show="col.visible" bt-row="row" column="col" callback="tdCallback(args, row, $parent.$index)">
-                                <bt-cell :row='row' :column='col' @callback='cell_callback'></bt-cell>
+                            <td style="text-align: center;" v-for="col in columns" v-show="col.visible">
+                                <bt-cell :row='row' :column='col' @cell-callback="cell_callback"></bt-cell>
                             </td>
                         </tr>
                         <tr class="no-records-found" v-if="items.length === 0">
@@ -99,8 +99,8 @@ export default {
             }
             this.$emit('row-click', row, index)
         },
-        cell_callback(row) {
-            this.$emit('cell-callback', row)
+        cell_callback(row, args) {
+            this.$emit('cell-callback', row, args)
         },
     },
     computed: {

@@ -25,7 +25,7 @@ export default {
     },
     methods: {
         callback() {
-            this.$emit('callback', this.row)
+            this.$emit('cell-callback', this.row, arguments)
         }
     }
 }
