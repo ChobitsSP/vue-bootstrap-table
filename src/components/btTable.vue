@@ -109,6 +109,7 @@ export default {
             return this.pager && (this.pager.total_result === total) && this.pager.page_size < total
         },
         items() {
+            return this.rows
             if(this.is_client_pager) {
                 var sql = 'rows'
                 if(this.searchQuery) {

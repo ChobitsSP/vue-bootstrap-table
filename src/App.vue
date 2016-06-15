@@ -51,10 +51,11 @@ export default {
                 is_desc: true,
                 total_result: 100,
             },
+            current_item: {},
         }
     },
     ready() {
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < 10; i++) {
             this.items.push({ id: i, name: 'name' + i })
         }
     },
@@ -63,7 +64,13 @@ export default {
             console.log('row clicked', item, index)
         },
         cellCallback(row, args) {
-            console.log('cellCallback', row, args)
+            if(args[0] === 'remove') {
+                this.items.$remove(row)
+            }
+            else {
+                this.current_item = row
+                this.$log('current_item')
+            }
         },
         pageChange() {
             console.log('pageChange')
