@@ -21,6 +21,8 @@ export default {
                 this.pager.is_desc = false
                 this.pager.sort_name = this.column.field
             }
+            
+            this.$dispatch('sort-change')
         }
     },
     computed: {

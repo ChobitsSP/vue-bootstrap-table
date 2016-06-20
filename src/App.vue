@@ -1,12 +1,9 @@
 <template>
-  <div id="app">
-    <v-table :columns="columns" :rows="items" :pager="pager" :config="config" 
-        :checklist.sync="checklist"
-        @row-click="rowClick" 
-        @cell-callback="cellCallback"
-        @page-change="pageChange">
-    </v-table>
-  </div>
+    <div id="app">
+        <v-table :columns="columns" :rows="items" :pager="pager" :config="config" :checklist.sync="checklist" @row-click="rowClick"
+            @cell-callback="cellCallback" @sort-change='sortChange' @page-change="pageChange">
+        </v-table>
+    </div>
 </template>
 
 <script>
@@ -40,7 +37,7 @@ export default {
                     title: 'edit',
                     field: 'edit',
                     visible: true,
-                    formatter: '<div><a class="btn btn-xs btn-success" @click.stop=callback("edit")>edit</a><a class="btn btn-xs btn-danger" @click.stop=callback("remove")>remove</a></div>',
+                    formatter: '<a class="btn btn-xs btn-success" @click.stop=callback("edit")>edit</a><a class="btn btn-xs btn-danger" @click.stop=callback("remove")>remove</a>',
                 },
             ],
             items: [],
@@ -75,13 +72,17 @@ export default {
         pageChange() {
             console.log('pageChange')
             this.$log('pager')
-        }
+        },
+        sortChange() {
+            console.log('sortChange')
+            this.$log('pager')
+        },
     }
 }
 </script>
 
 <style>
-  body {
-    font-family: Helvetica, sans-serif;
-  }
+    body {
+        font-family: Helvetica, sans-serif;
+    }
 </style>
