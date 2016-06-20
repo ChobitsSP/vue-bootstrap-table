@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>vue-bootstrap-table</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="http://cdn.bootcss.com/bootstrap-table/1.10.1/bootstrap-table.min.css" rel="stylesheet">
+</head>
+<body>
+
+    <div id="demo">
+        <bt-table :columns="columns" :rows="items" :pager="pager" :config="config" :checklist.sync="checklist" @row-click="rowClick"
+                  @cell-callback="cellCallback" @sort-change='pageChange' @page-change="pageChange">
+        </bt-table>
+    </div>
+
+    <script src="http://cdn.bootcss.com/vue/1.0.17/vue.min.js"></script>
+    <script src="http://cdn.bootcss.com/vue-resource/0.8.0/vue-resource.min.js"></script>
+    <script src="dist/VueBtTable.js"></script>
+    <script>
+        'use strict';
+
+        new Vue({
+            el: '#demo',
+            components: {
+                btTable: VueStrapTable.btTable,
+            },
+            data: function () {
+                return {
+                    // note: changing this line won't causes changes
+                    // with hot-reload because the reloaded component
+                    // preserves its current state and we are modifying
+                    // its initial state.
+                    checklist: [],
+                    columns: [
+                        {
+                            title: 'id',
+                            field: 'id',
+                            visible: true,
+                            sortable: true,
+                        },
+                        {
+                            title: 'name',
+                            field: 'name',
+                            visible: true,
+                            sortable: true,
+                        },
+                        {
+                            title: 'edit',
+                            field: 'edit',
+                            visible: true,
+                            formatter: '<a class="btn btn-xs btn-success" @click.stop=callback("edit")>edit</a><a class="btn btn-xs btn-danger" @click.stop=callback("remove")>remove</a>',
+                        },
+                    ],
+                    items: [],
+                    pager: {
+                        page_no: 1,
+                        page_size: 15,
+                        sort_name: 'id',
+                        is_desc: true,
+                        total_result: 0,
+                    },
+                    current_item: {},
+                }
+            },
+            ready: function () {
+                this.pageChange()
+            },
+            methods: {
+                rowClick(item, index) {
+                    console.log('row clicked', item, index)
+                },
+                cellCallback(row, args) {
+                    if (args[0] === 'remove') {
+                        this.items.$remove(row)
+                    }
+                    else {
+                        this.current_item = row
+                        this.$log('current_item')
+                    }
+                },
+                pageChange() {
+                    var psot_data = {
+                        sort: this.pager.sort_name + '|' + (this.pager.is_desc ? 'desc' : 'asc'),
+                        page: this.pager.page_no,
+                        per_page: this.pager.page_size,
+                    }
+                    this.$http.get('http://vuetable.ratiw.net/api/users', psot_data).then(rsp => {
+                        this.pager.total_result = rsp.data.total
+                        this.items = rsp.data.data
+                    })
+                },
+                sortChange() {
+                    console.log('sortChange')
+                    this.$log('pager')
+                },
+            }
+        })
+    </script>
+</body>
+</html>
