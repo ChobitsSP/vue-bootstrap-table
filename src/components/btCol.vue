@@ -1,12 +1,9 @@
 <template>
-	<div class="th-inner" 
-	  :class="[{sortable: sortable}, sort_class]"
-	  @click="change_sort()"
-	  @keypress.enter="change_sort()">
-	    {{column.title}}
-  </div>
-  <div class="fht-cell">
-  </div>
+    <div class="th-inner" :class="sort_class" @click="change_sort()" @keypress.enter="change_sort()">
+        {{column.title}}
+    </div>
+    <div class="fht-cell">
+    </div>
 </template>
 
 <script>
@@ -26,19 +23,24 @@ export default {
             }
         }
     },
-    compouted: {
+    computed: {
         sortable() {
             return this.column.sortable && this.pager
         },
         sort_class() {
-            // if (!this.sortable) {
-            //     return ''
-            // }
-            if (this.pager.sort_name === column.field) {
-                return this.pager.is_desc ? 'desc' : 'asc'
-            } else {
-                return 'both'
+            if (!this.sortable) {
+                return ''
             }
+
+            let class_str = 'sortable '
+
+            if (this.pager.sort_name === this.column.field) {
+                class_str += this.pager.is_desc ? 'desc' : 'asc'
+            } else {
+                class_str += 'both'
+            }
+
+            return class_str
         }
     }
 }
