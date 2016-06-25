@@ -19,6 +19,8 @@
     "cross-env": "^1.0.6",
     "css-loader": "^0.23.0",
     "file-loader": "^0.8.4",
+    "gulp-jshint": "^2.0.1",
+    "jshint": "^2.9.2",
     "json-loader": "^0.5.4",
     "url-loader": "^0.5.7",
     "vue-hot-reload-api": "^1.2.0",

@@ -8,7 +8,7 @@
                 <slot name="toolbar-right"></slot>
             </div>
         </div>
-        <div class="fixed-table-container" style="padding-bottom: 0px;">
+        <div class="fixed-table-container">
             <div class="fixed-table-body">
                 <table class="table table-striped table-hover table-bordered dataTable no-footer" ng-cloak>
                     <thead>
@@ -23,7 +23,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody v-show="!loading" v-cloak>
+                    <tbody v-show="!config.loading" v-cloak>
                         <tr v-for="row in items" track-by="$index" :class="rowClass(row, $index)" @click="row_click(row, $index)">
                             <td style="text-align: center;" class="bs-checkbox" v-if="checklist">
                                 <input type="checkbox" v-model="checklist" :value="row" class="checkbox" />
@@ -36,17 +36,17 @@
                             <td colspan="999" class="text-center">没有找到匹配的记录</td>
                         </tr>
                     </tbody>
-                    <tbody v-if="loading">
+                    <tbody v-if="config.loading">
                         <tr>
                             <td colspan="999" class="text-center">正在加载数据 ... </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div v-if="pager">
-            <bt-pager :page-no.sync="pager.page_no" :page-size.sync="pager.page_size" :total-result="pager.total_result">
-            </bt-pager>
+            <div v-if="pager">
+                <bt-pager :page-no.sync="pager.page_no" :page-size.sync="pager.page_size" :total-result="pager.total_result">
+                </bt-pager>
+            </div>
         </div>
     </div>
 </template>
@@ -69,7 +69,10 @@ export default {
     },
     props: ['columns', 'rows', 'pager', 'config', 'checklist', 'searchQuery'],
     created () {
-        this.config = this.config || {}
+        this.config = this.config || {
+            no_records_text: '没有找到匹配的记录',
+            loading_text: '正在加载数据 ... ',
+        }
     },
     beforeCompile () {
         // this.columns.forEach(col => {

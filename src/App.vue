@@ -1,12 +1,14 @@
 <template>
     <div id="app">
-        <v-table :columns="columns" :rows="items" :pager="pager" :config="config" :checklist.sync="checklist" @row-click="rowClick"
-            @cell-callback="cellCallback" @sort-change='sortChange' @page-change="pageChange">
+        <v-table :columns="columns" :rows="items" :pager="pager" :config="config" 
+            :checklist.sync="checklist" @row-click="rowClick"
+            @cell-callback="cellCallback" @sort-change='pageChange' @page-change="pageChange">
         </v-table>
     </div>
 </template>
 
 <script>
+
 import vTable from './components/btTable.vue'
 
 export default {
@@ -48,13 +50,14 @@ export default {
                 is_desc: true,
                 total_result: 100,
             },
+            config: {
+                loading: true,
+            },
             current_item: {},
         }
     },
     ready() {
-        for (var i = 0; i < 10; i++) {
-            this.items.push({ id: i, name: 'name' + i })
-        }
+        this.pageChange()
     },
     methods: {
         rowClick(item, index) {
@@ -70,8 +73,18 @@ export default {
             }
         },
         pageChange() {
-            console.log('pageChange')
-            this.$log('pager')
+                    var psot_data = {
+                        sort: this.pager.sort_name + '|' + (this.pager.is_desc ? 'desc' : 'asc'),
+                        page: this.pager.page_no,
+                        per_page: this.pager.page_size,
+                    }
+                    this.config.loading = true
+                    this.$http.get('http://vuetable.ratiw.net/api/users', psot_data).then(rsp => {
+                        this.pager.total_result = rsp.data.total
+                        this.items = rsp.data.data
+                        this.checklist = []
+                        this.config.loading = false
+                    })
         },
         sortChange() {
             console.log('sortChange')
