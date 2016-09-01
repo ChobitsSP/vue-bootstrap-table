@@ -53,86 +53,81 @@
 
 <script>
 
-import btCell from './btCell.vue'
-import btCol from './btCol.vue'
-import btPager from './btPager.vue'
-import { directive as selectAll } from './../directives/selectAll.js'
+    let btCell = require('./btCell.vue')
+    let btCol = require('./btCol.vue')
+    let btPager = require('./btPager.vue')
+    let selectAll = require('./../directives/selectAll.js')
 
-export default {
-    components: {
-        btPager,
-        btCol,
-        btCell,
-    },
-    directives: {
-        selectAll,
-    },
-    props: ['columns', 'rows', 'pager', 'config', 'checklist', 'searchQuery'],
-    created () {
-        this.config = this.config || {
-            no_records_text: '没有找到匹配的记录',
-            loading_text: '正在加载数据 ... ',
-        }
-    },
-    beforeCompile () {
-        // this.columns.forEach(col => {
-        //     if(col.formatter){
-        //         Vue.partial(col.field, col.formatter)
-        //     }
-        //     else{
-        //         Vue.partial(col.field, '<div>{{row.' + col.field + '}}</div>')
-        //     }
-        // })
-    },
-    ready() {
-        
-    },
-    methods: {
-        rowClass() {
-            return '';
+    module.exports = {
+        components: {
+            btPager,
+            btCol,
+            btCell,
         },
-        row_click(row, index) {
-            if (this.checklist) {
-                if (!this.checklist.some(t => t === row)) {
-                    this.checklist.push(row)
+        directives: {
+            selectAll,
+        },
+        props: ['columns', 'rows', 'pager', 'config', 'checklist', 'searchQuery'],
+        created () {
+            this.config = this.config || {
+                no_records_text: '没有找到匹配的记录',
+                loading_text: '正在加载数据 ... ',
+            }
+        },
+        beforeCompile () {
+            // this.columns.forEach(col => {
+            //     if(col.formatter){
+            //         Vue.partial(col.field, col.formatter)
+            //     }
+            //     else{
+            //         Vue.partial(col.field, '<div>{{row.' + col.field + '}}</div>')
+            //     }
+            // })
+        },
+        ready() {
+
+        },
+        methods: {
+            rowClass() {
+                return '';
+            },
+            row_click(row, index) {
+                if (this.checklist) {
+                    if (!this.checklist.some(t => t === row)) {
+                        this.checklist.push(row)
+                    }
+                    else {
+                        this.checklist.$remove(row)
+                    }
+                }
+                this.$emit('row-click', row, index)
+            },
+            cell_callback(row, args) {
+                this.$emit('cell-callback', row, args)
+            },
+        },
+        computed: {
+            is_client_pager() {
+                var total = this.rows.length
+                return this.pager && (this.pager.total_result === total) && this.pager.page_size < total
+            },
+            items() {
+                return this.rows
+                if (this.is_client_pager) {
+                    var sql = 'rows'
+                    if (this.searchQuery) {
+                        sql += ' | filterBy searchQuery'
+                    }
+                    sql += ' | orderBy pager.sort_name ' + (this.pager.is_desc ? -1 : 1)
+                    var offset = (this.pager.page_no - 1) * this.pager.page_size
+                    offset = Math.max(0, offset)
+                    sql += ' | limitBy pager.page_size ' + offset
+                    return this.$eval(sql)
                 }
                 else {
-                    this.checklist.$remove(row)
+                    return this.rows
                 }
             }
-            this.$emit('row-click', row, index)
-        },
-        cell_callback(row, args) {
-            this.$emit('cell-callback', row, args)
-        },
-    },
-    computed: {
-        is_client_pager() {
-            var total = this.rows.length
-            return this.pager && (this.pager.total_result === total) && this.pager.page_size < total
-        },
-        items() {
-            return this.rows
-            if(this.is_client_pager) {
-                var sql = 'rows'
-                if(this.searchQuery) {
-                    sql += ' | filterBy searchQuery'
-                }
-                sql += ' | orderBy pager.sort_name ' + (this.pager.is_desc ? -1 : 1)
-                var offset = (this.pager.page_no - 1) * this.pager.page_size
-                offset = Math.max(0, offset)
-                sql += ' | limitBy pager.page_size ' + offset
-                return this.$eval(sql)
-            }
-            else {
-                return this.rows
-            }
-        }
-    },
-    data() {
-        return {
-            
         }
     }
-}
 </script>

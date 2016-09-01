@@ -1,8 +1,4 @@
-'use strict';
-
-var vue = require('vue');
-
-var directive = {
+module.exports = {
     params: ['array'],
     twoWay: true,
     bind: function () {
@@ -27,10 +23,3 @@ var directive = {
         this.el.removeEventListener('click', this.handler)
     }
 }
-
-var mixin = {
-  directives: { selectAll: directive },
-};
-
-exports.directive = directive;
-exports.mixin = mixin;

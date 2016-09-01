@@ -1,8 +1,5 @@
-import Vue from 'vue'
-import App from './App.vue'
-import VueResource from 'vue-resource'
+import btTable from './components/btTable'
 
-new Vue({
-  el: 'body',
-  components: { App }
-})
+export default window.VueStrapTable = {
+    btTable,
+}
