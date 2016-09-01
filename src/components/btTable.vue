@@ -1,13 +1,6 @@
 <template>
     <div class="bootstrap-table">
-        <div class="fixed-table-toolbar">
-            <div class="bars pull-left">
-                <slot name="toolbar-left"></slot>
-            </div>
-            <div class="columns columns-right btn-group pull-right">
-                <slot name="toolbar-right"></slot>
-            </div>
-        </div>
+        <slot name="toolbar"></slot>
         <div class="fixed-table-container">
             <div class="fixed-table-body">
                 <table class="table table-striped table-hover table-bordered dataTable no-footer" ng-cloak>
@@ -18,7 +11,7 @@
                                     <input type="checkbox" v-select-all="checklist" :array="items" />
                                 </div>
                             </th>
-                            <th style="text-align: center;" v-for="col in columns" v-show="col.visible" bt-col="col" pager="pager">
+                            <th style="text-align: center;" v-for="col in columns" v-show="col.visible">
                                 <bt-col :column='col' :pager.sync='pager'></bt-col>
                             </th>
                         </tr>
@@ -43,7 +36,7 @@
                     </tbody>
                 </table>
             </div>
-            <div v-if="pager">
+            <div v-if="config.show_pager">
                 <bt-pager :page-no.sync="pager.page_no" :page-size.sync="pager.page_size" :total-result="pager.total_result">
                 </bt-pager>
             </div>
@@ -52,7 +45,6 @@
 </template>
 
 <script>
-
     let btCell = require('./btCell.vue')
     let btCol = require('./btCol.vue')
     let btPager = require('./btPager.vue')
@@ -67,7 +59,7 @@
         directives: {
             selectAll,
         },
-        props: ['columns', 'rows', 'pager', 'config', 'checklist', 'searchQuery'],
+        props: ['columns', 'rows', 'pager', 'config', 'checklist'],
         created () {
             this.config = this.config || {
                 no_records_text: '没有找到匹配的记录',
@@ -113,20 +105,20 @@
             },
             items() {
                 return this.rows
-                if (this.is_client_pager) {
-                    var sql = 'rows'
-                    if (this.searchQuery) {
-                        sql += ' | filterBy searchQuery'
-                    }
-                    sql += ' | orderBy pager.sort_name ' + (this.pager.is_desc ? -1 : 1)
-                    var offset = (this.pager.page_no - 1) * this.pager.page_size
-                    offset = Math.max(0, offset)
-                    sql += ' | limitBy pager.page_size ' + offset
-                    return this.$eval(sql)
-                }
-                else {
-                    return this.rows
-                }
+                //if (this.is_client_pager) {
+                //    var sql = 'rows'
+                //    if (this.searchQuery) {
+                //        sql += ' | filterBy searchQuery'
+                //    }
+                //    sql += ' | orderBy pager.sort_name ' + (this.pager.is_desc ? -1 : 1)
+                //    var offset = (this.pager.page_no - 1) * this.pager.page_size
+                //    offset = Math.max(0, offset)
+                //    sql += ' | limitBy pager.page_size ' + offset
+                //    return this.$eval(sql)
+                //}
+                //else {
+                //    return this.rows
+                //}
             }
         }
     }

@@ -66,6 +66,7 @@
     <Content Include="src\directives\selectAll.js" />
     <Content Include="src\index.js" />
     <Content Include="src\main.js" />
+    <Content Include="src\utils\NodeList.js" />
     <Content Include="Web.config" />
     <Content Include="webpack.config.js" />
   </ItemGroup>
@@ -83,6 +84,7 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="static\.gitkeep" />
+    <Content Include="src\components\btColGroup.vue" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
