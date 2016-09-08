@@ -1,10 +1,20 @@
-import btTable from './components/btTable'
-import btPager from './components/btPager'
-import btCol from './components/btCol'
-import btCell from './components/btCell'
-import btColGroup from './components/btColGroup'
+import btTable from 'components/btTable'
+import btPager from 'components/btPager'
+import btCol from 'components/btCol'
+import btCell from 'components/btCell'
+import btColGroup from 'components/btColGroup'
 
-export default window.VueStrapTable = {
+let VueStrapTable = {
     btTable,
-    btColGroup,
+    btColGroup
+};
+
+if (typeof define === 'function' && define.amd) {
+    define(function () {
+        return VueStrapTable
+    })
+} else if (typeof module === 'object' && module.exports) {
+    module.exports = VueStrapTable
+} else {
+    window.VueStrapTable = VueStrapTable
 }
