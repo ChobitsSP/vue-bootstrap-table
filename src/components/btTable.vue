@@ -45,20 +45,7 @@
 </template>
 
 <script>
-    let btCell = require('./btCell.vue')
-    let btCol = require('./btCol.vue')
-    let btPager = require('./btPager.vue')
-    let selectAll = require('./../directives/selectAll.js')
-
     module.exports = {
-        components: {
-            btPager,
-            btCol,
-            btCell,
-        },
-        directives: {
-            selectAll,
-        },
         props: ['columns', 'rows', 'pager', 'config', 'checklist'],
         created () {
             this.config = this.config || {
@@ -120,6 +107,14 @@
                 //    return this.rows
                 //}
             }
+        },
+        components: {
+            btPager: require('components/btPager.vue'),
+            btCol: require('components/btCol.vue'),
+            btCell: require('components/btCell.vue'),
+        },
+        directives: {
+            selectAll: require('directives/selectAll.js'),
         }
     }
 </script>
