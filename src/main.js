@@ -9,6 +9,8 @@ let VueStrapTable = {
     btColGroup
 };
 
+window.VueStrapTable = VueStrapTable;
+
 if (typeof define === 'function' && define.amd) {
     define(function () {
         return VueStrapTable

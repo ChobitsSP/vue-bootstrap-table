@@ -7,36 +7,38 @@
     <link href="http://cdn.bootcss.com/bootstrap-table/1.10.1/bootstrap-table.min.css" rel="stylesheet">
 </head>
 <body>
-    <bt-table :columns="columns"
-              :rows="items | filterBy searchQuery" :pager="pager" :config="config"
-              :checklist.sync="checklist" @row-click="rowClick"
-              @cell-callback="cellCallback" @sort-change='pageChange' @page-change="pageChange">
-        <div slot="toolbar" class="fixed-table-toolbar">
-            <div class="bars pull-left">
-                <button id="remove" class="btn btn-danger" disabled="">
-                    <i class="glyphicon glyphicon-remove"></i> Delete
-                </button>
+    <div class="container-fluid">
+        <bt-table :columns="columns"
+                  :rows="items | filterBy searchQuery" :pager="pager" :config="config"
+                  :checklist.sync="checklist" @row-click="rowClick"
+                  @cell-callback="cellCallback" @sort-change='pageChange' @page-change="pageChange">
+            <div slot="toolbar" class="fixed-table-toolbar">
+                <div class="bars pull-left">
+                    <button id="remove" class="btn btn-danger" disabled="">
+                        <i class="glyphicon glyphicon-remove"></i> Delete
+                    </button>
+                </div>
+                <div slot="toolbar-right" class="columns columns-right btn-group pull-right">
+                    <button class="btn btn-default" @click="config.show_pager=!config.show_pager" type="button" name="paginationSwitch" title="Hide/Show pagination">
+                        <i class="glyphicon glyphicon-collapse-down icon-chevron-down">
+                        </i>
+                    </button>
+                    <button @click="pageChange" class="btn btn-default" type="button" name="refresh" title="Refresh">
+                        <i class="glyphicon glyphicon-refresh icon-refresh"></i>
+                    </button>
+                    <button class="btn btn-default" type="button" name="toggle" title="Toggle">
+                        <i class="glyphicon glyphicon-list-alt icon-list-alt"></i>
+                    </button>
+                    <bt-col-group :columns="columns"></bt-col-group>
+                </div>
+                <div class="pull-right search">
+                    <input class="form-control" v-model="searchQuery" type="text" placeholder="Search">
+                </div>
             </div>
-            <div slot="toolbar-right" class="columns columns-right btn-group pull-right">
-                <button class="btn btn-default" @click="config.show_pager=!config.show_pager" type="button" name="paginationSwitch" title="Hide/Show pagination">
-                    <i class="glyphicon glyphicon-collapse-down icon-chevron-down">
-                    </i>
-                </button>
-                <button @click="pageChange" class="btn btn-default" type="button" name="refresh" title="Refresh">
-                    <i class="glyphicon glyphicon-refresh icon-refresh"></i>
-                </button>
-                <button class="btn btn-default" type="button" name="toggle" title="Toggle">
-                    <i class="glyphicon glyphicon-list-alt icon-list-alt"></i>
-                </button>
-                <bt-col-group :columns="columns"></bt-col-group>
-            </div>
-            <div class="pull-right search">
-                <input class="form-control" v-model="searchQuery" type="text" placeholder="Search">
-            </div>
-        </div>
-    </bt-table>
+        </bt-table>
+    </div>
 
-    <script src="http://cdn.bootcss.com/vue/1.0.17/vue.js"></script>
+    <script src="http://cdn.bootcss.com/vue/1.0.26/vue.js"></script>
     <script src="http://cdn.bootcss.com/vue-resource/0.8.0/vue-resource.min.js"></script>
     <!-- built files will be auto injected -->
 </body>
@@ -75,9 +77,9 @@
                 items: [],
                 pager: {
                     page_no: 1,
-                    page_size: 15,
+                    page_size: 10,
                     sort_name: 'id',
-                    is_desc: true,
+                    is_desc: false,
                     total_result: 0,
                 },
                 config: {
